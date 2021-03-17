@@ -10,19 +10,65 @@ namespace AddressBook
     {
         static Task Main(string[] args)
         {
+            Console.Title = "Address Book";
+
+            int option = 0;
+
             using IHost host = InjectDependencies(args).Build();
-
-            //List<string> fields = GetFields();
             
-            //Create(host.Services, fields);
-            //Console.WriteLine("\nOperation has been completed.");
-            
-            Console.WriteLine(Select(host.Services));
+            do
+            {
+                Console.Clear();
+                Menu();
+                Console.Write("\nEnter one option: ");
+                option = Int32.Parse(Console.ReadLine());
 
+                switch(option)
+                {
+                    case 1:
+                        Console.Clear();
+                        List<string> fields = GetFields();            
+                        Create(host.Services, fields);
+                        Console.WriteLine("\nOperation has been completed. \nPress any key to return to the Menu!");
+                        Console.ReadKey();                        
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Console.WriteLine("Update method is being developed.\nPress any key to return to the Menu!");
+                        Console.ReadKey();
+                        break;
+                    case 3: 
+                        Console.Clear();
+                        Console.WriteLine("Delete method is being developed.\nPress any key to return to the Menu!");
+                        Console.ReadKey();
+                        break;
+                    case 4:
+                        Console.Clear();
+                        Console.WriteLine(Select(host.Services));
+                        Console.WriteLine("\nPress any key to return to the Menu!");
+                        Console.ReadKey();
+                        break;
+                    case 5:
+                        Console.Clear();
+                        Console.WriteLine("End program! Press any key to exit the application!");
+                        Console.ReadKey();
+                        break;
+                }
+            }while(option != 5);
+                       
             return host.StopAsync();            
         }
 
-        static void DisplayFields(List<string> fields) => fields.ForEach(field => Console.WriteLine(field));
+        static void Menu()
+        {
+            Console.WriteLine("Menu\n");
+
+            Console.WriteLine("1 - Create contact");
+            Console.WriteLine("2 - Update contact");
+            Console.WriteLine("3 - Delete contact");
+            Console.WriteLine("4 - Display contacts");
+            Console.WriteLine("5 - Exit");
+        }
 
         static List<string> GetFields()
         {

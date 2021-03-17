@@ -12,7 +12,7 @@ namespace AddressBook
             using(contactTable)
             {
                 contactTable.Add(new ContactModel {Name = contact.Name, WorkInfo = contact.WorkInfo, 
-                                         PhoneNumber = $"{long.Parse(contact.PhoneNumber):(00)0.0000-0000}",                                         
+                                         PhoneNumber = $"{long.Parse(contact.PhoneNumber):(00)0-0000-0000}",                                         
                                          City = contact.City, State = contact.State});
                 contactTable.SaveChanges();            
             }            
@@ -21,7 +21,7 @@ namespace AddressBook
         public string SelectContacts()
         {
             string contactsLayout;
-            contactsLayout = "Address Book";
+            contactsLayout = "My Contacts\n=================================================================\n";
 
             using(contactTable)
             {
@@ -29,10 +29,10 @@ namespace AddressBook
 
                 foreach (var item in contactList)
                 {
-                    contactsLayout += "\n\nId: " + item.Id + "\nName: " + item.Name +
+                    contactsLayout += "\nId: " + item.Id + "\nName: " + item.Name +
                                       "\nWork Info: " + item.WorkInfo + "\nPhone number: " + item.PhoneNumber +
                                       "\nCity: " + item.City + "\nState: " + item.State +
-                                      "\n=================================================================\n";                                
+                                      "\n\n=================================================================\n";                                
                 }
             }
             return contactsLayout;
