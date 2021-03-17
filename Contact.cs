@@ -11,6 +11,12 @@ namespace AddressBook
             State = state;
         }
 
+        public Contact(int id)
+        {
+            Id = id;
+        }
+
+        public int Id{get; init;}
         public string Name {get; init;}
         public string WorkInfo {get; init;}
         public string PhoneNumber {get; init;}
