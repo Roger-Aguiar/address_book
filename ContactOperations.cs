@@ -4,7 +4,7 @@ using AddressBook.Models;
 
 namespace AddressBook
 {
-    public class ContactOperations : ICreateContact, ISelectContacts
+    public class ContactOperations : ICreateContact, ISelectContacts, IUpdateContact
     {
         AddressBookContext contactTable = new AddressBookContext();
         public void Create(Contact contact)
@@ -50,6 +50,21 @@ namespace AddressBook
                 }
             }
             return contactsLayout;
+        }
+
+        public void Update(Contact contact)
+        {
+            using(contactTable)
+            {
+                var contactId = contactTable.Contacts.Find(contact.Id);
+                contactId.Name = contact.Name;
+                contactId.WorkInfo = contact.WorkInfo;
+                contactId.PhoneNumber = contact.PhoneNumber;
+                contactId.City = contact.City;
+                contactId.State = contact.State;
+
+                contactTable.SaveChanges();
+            }
         }
     }
 }
