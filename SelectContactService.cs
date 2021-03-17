@@ -13,5 +13,10 @@ namespace AddressBook
         {
             return _select.SelectContacts();
         }
+
+        public string SelectById(int id)
+        {
+            return _select.SelectById(id);
+        }
     }
 }

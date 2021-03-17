@@ -18,6 +18,20 @@ namespace AddressBook
             }            
         }
 
+        public string SelectById(int id)
+        {
+            string contactLayout;
+
+            using(contactTable)
+            {
+                var contactId = contactTable.Contacts.Find(id);
+                contactLayout = "Name: " + contactId.Name + "\nWork info: " + contactId.WorkInfo +
+                                "\nPhone number: " + contactId.PhoneNumber + "\nCity: " + contactId.City +
+                                "\nState: " + contactId.State;
+            }
+            return contactLayout;
+        }
+
         public string SelectContacts()
         {
             string contactsLayout;
