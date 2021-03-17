@@ -11,7 +11,7 @@ namespace AddressBook
         static Task Main(string[] args)
         {
             Console.Title = "Address Book";
-
+            List<string> fields = new List<string>();
             int option = 0;
 
             using IHost host = InjectDependencies(args).Build();
@@ -27,14 +27,19 @@ namespace AddressBook
                 {
                     case 1:
                         Console.Clear();
-                        List<string> fields = GetFields();            
+                        fields = GetFields();            
                         Create(host.Services, fields);
                         Console.WriteLine("\nOperation has been completed. \nPress any key to return to the Menu!");
                         Console.ReadKey();                        
                         break;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("Update method is being developed.\nPress any key to return to the Menu!");
+                        Console.WriteLine(Select(host.Services));
+                        Console.Write("Enter the Id: ");
+                        int id = Int32.Parse(Console.ReadLine());
+                        Console.Clear();
+                        Console.WriteLine(SelectById(host.Services, id) + "\n");
+                        fields = GetFields();
                         Console.ReadKey();
                         break;
                     case 3: 
@@ -104,7 +109,7 @@ namespace AddressBook
             CreateContactService contactService = provider.GetRequiredService<CreateContactService>();
             contactService.Create(new Contact(fields[0], fields[1], fields[2], fields[3], fields[4]));
         }
-
+        
         static string Select(IServiceProvider services)
         {
             using IServiceScope serviceScope = services.CreateScope();
@@ -112,6 +117,15 @@ namespace AddressBook
 
             SelectContactService contactService = provider.GetRequiredService<SelectContactService>();
             return contactService.Select();
+        }
+
+        static string SelectById(IServiceProvider services, int id)
+        {
+            using IServiceScope serviceScope = services.CreateScope();
+            IServiceProvider provider = serviceScope.ServiceProvider;
+
+            SelectContactService contactService = provider.GetRequiredService<SelectContactService>();
+            return contactService.SelectById(id);
         }
     }
 }
