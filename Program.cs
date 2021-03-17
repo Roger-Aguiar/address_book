@@ -12,10 +12,12 @@ namespace AddressBook
         {
             using IHost host = InjectDependencies(args).Build();
 
-            List<string> fields = GetFields();
+            //List<string> fields = GetFields();
             
-            Create(host.Services, fields);
-            Console.WriteLine("\nOperation has been completed.");
+            //Create(host.Services, fields);
+            //Console.WriteLine("\nOperation has been completed.");
+            
+            Console.WriteLine(Select(host.Services));
 
             return host.StopAsync();            
         }
@@ -55,6 +57,15 @@ namespace AddressBook
 
             CreateContactService contactService = provider.GetRequiredService<CreateContactService>();
             contactService.Create(new Contact(fields[0], fields[1], fields[2], fields[3], fields[4]));
+        }
+
+        static string Select(IServiceProvider services)
+        {
+            using IServiceScope serviceScope = services.CreateScope();
+            IServiceProvider provider = serviceScope.ServiceProvider;
+
+            SelectContactService contactService = provider.GetRequiredService<SelectContactService>();
+            return contactService.Select();
         }
     }
 }

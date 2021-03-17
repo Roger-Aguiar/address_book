@@ -6,20 +6,36 @@ namespace AddressBook
 {
     public class ContactOperations : ICreateContact, ISelectContacts
     {
+        AddressBookContext contactTable = new AddressBookContext();
         public void Create(Contact contact)
         {
-            using(var db = new AddressBookContext())
+            using(contactTable)
             {
-                db.Add(new ContactModel {Name = contact.Name, WorkInfo = contact.WorkInfo, 
+                contactTable.Add(new ContactModel {Name = contact.Name, WorkInfo = contact.WorkInfo, 
                                          PhoneNumber = $"{long.Parse(contact.PhoneNumber):(00)0.0000-0000}",                                         
                                          City = contact.City, State = contact.State});
-                db.SaveChanges();            
+                contactTable.SaveChanges();            
             }            
         }
 
-        public void SelectContacts()
+        public string SelectContacts()
         {
-            throw new NotImplementedException();
+            string contactsLayout;
+            contactsLayout = "Address Book";
+
+            using(contactTable)
+            {
+                var contactList = contactTable.Contacts.OrderBy(contacts  => contacts.Name);
+
+                foreach (var item in contactList)
+                {
+                    contactsLayout += "\n\nId: " + item.Id + "\nName: " + item.Name +
+                                      "\nWork Info: " + item.WorkInfo + "\nPhone number: " + item.PhoneNumber +
+                                      "\nCity: " + item.City + "\nState: " + item.State +
+                                      "\n=================================================================\n";                                
+                }
+            }
+            return contactsLayout;
         }
     }
 }

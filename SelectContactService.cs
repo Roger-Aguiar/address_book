@@ -9,9 +9,9 @@ namespace AddressBook
             _select = select;
         }
 
-        public void Select()
+        public string Select()
         {
-            _select.SelectContacts();
+            return _select.SelectContacts();
         }
     }
 }
