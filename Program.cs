@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AddressBook
 {
@@ -16,6 +15,7 @@ namespace AddressBook
             List<string> fields = GetFields();
             
             Create(host.Services, fields);
+            Console.WriteLine("\nOperation has been completed.");
 
             return host.StopAsync();            
         }
