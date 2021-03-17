@@ -8,7 +8,7 @@ namespace AddressBook.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=AddressBook;Integrated Security=True");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-KGLLRR0\SQLEXPRESS;Database=ADDRESS_BOOK;Integrated Security=True");
         }
     }
 }
