@@ -15,14 +15,14 @@ namespace AddressBook
             int option = 0;
 
             using IHost host = InjectDependencies(args).Build();
-            
+                        
             do
             {
                 Console.Clear();
                 Menu();
                 Console.Write("\nEnter one option: ");
                 option = Int32.Parse(Console.ReadLine());
-
+                
                 switch(option)
                 {
                     case 1:
@@ -38,9 +38,12 @@ namespace AddressBook
                         Console.Write("Enter the Id: ");
                         int id = Int32.Parse(Console.ReadLine());
                         Console.Clear();
-                        Console.WriteLine(SelectById(host.Services, id) + "\n");
+                        Console.WriteLine(SelectById(host.Services, id) + "\n");                        
                         fields = GetFields();
-                        Console.ReadKey();
+                        fields.Insert(0, id.ToString());
+                        Update(host.Services, fields);
+                        Console.WriteLine("Operation has been completed! Press any key to return to the menu!");
+                        Console.ReadKey();                                                
                         break;
                     case 3: 
                         Console.Clear();
@@ -63,7 +66,7 @@ namespace AddressBook
                        
             return host.StopAsync();            
         }
-
+        
         static void Menu()
         {
             Console.WriteLine("Menu\n");
@@ -83,13 +86,13 @@ namespace AddressBook
             fields.Add(Console.ReadLine());
             Console.Write("Enter the work info: ");
             fields.Add(Console.ReadLine());
-            Console.Write("Enter the phone number: (Just numbers) ");
+            Console.Write("Enter the phone number: (Just numbers with DDD (00)) ");
             fields.Add(Console.ReadLine());
             Console.Write("Enter the city: ");
             fields.Add(Console.ReadLine());
             Console.Write("Enter the state: ");
             fields.Add(Console.ReadLine());
-
+            
             return fields;
         }
 
@@ -97,9 +100,11 @@ namespace AddressBook
             Host.CreateDefaultBuilder(args)
             .ConfigureServices((_, services) =>
             services.AddTransient<ICreateContact, ContactOperations>()
-            .AddTransient<ISelectContacts, ContactOperations>()        
+            .AddTransient<ISelectContacts, ContactOperations>()
+            .AddTransient<IUpdateContact, ContactOperations>()        
             .AddTransient<CreateContactService>()
-            .AddTransient<SelectContactService>());
+            .AddTransient<SelectContactService>()
+            .AddTransient<UpdateContactService>());
 
         static void Create(IServiceProvider services, List<string> fields)
         {
@@ -110,6 +115,15 @@ namespace AddressBook
             contactService.Create(new Contact(fields[0], fields[1], fields[2], fields[3], fields[4]));
         }
         
+        static void Update(IServiceProvider services, List<string> fields)
+        {
+            using IServiceScope serviceScope = services.CreateScope();
+            IServiceProvider provider = serviceScope.ServiceProvider;
+
+            UpdateContactService contactService = provider.GetRequiredService<UpdateContactService>();
+            contactService.Update(new Contact(Convert.ToInt32(fields[0].ToString()), fields[1], fields[2], fields[3], fields[4], fields[5]));
+        }
+
         static string Select(IServiceProvider services)
         {
             using IServiceScope serviceScope = services.CreateScope();

@@ -5,7 +5,7 @@ using AddressBook.Models;
 namespace AddressBook
 {
     public class ContactOperations : ICreateContact, ISelectContacts, IUpdateContact
-    {
+    {        
         AddressBookContext contactTable = new AddressBookContext();
         public void Create(Contact contact)
         {
@@ -19,7 +19,7 @@ namespace AddressBook
         }
 
         public string SelectById(int id)
-        {
+        {            
             string contactLayout;
 
             using(contactTable)
@@ -59,7 +59,7 @@ namespace AddressBook
                 var contactId = contactTable.Contacts.Find(contact.Id);
                 contactId.Name = contact.Name;
                 contactId.WorkInfo = contact.WorkInfo;
-                contactId.PhoneNumber = contact.PhoneNumber;
+                contactId.PhoneNumber = $"{long.Parse(contact.PhoneNumber):(00)0-0000-0000}";
                 contactId.City = contact.City;
                 contactId.State = contact.State;
 
