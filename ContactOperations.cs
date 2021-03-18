@@ -4,7 +4,7 @@ using AddressBook.Models;
 
 namespace AddressBook
 {
-    public class ContactOperations : ICreateContact, ISelectContacts, IUpdateContact
+    public class ContactOperations : ICreateContact, ISelectContacts, IUpdateContact, IDeleteContact
     {        
         AddressBookContext contactTable = new AddressBookContext();
         public void Create(Contact contact)
@@ -16,6 +16,17 @@ namespace AddressBook
                                          City = contact.City, State = contact.State});
                 contactTable.SaveChanges();            
             }            
+        }
+
+        public void Delete(Contact contact)
+        {
+            using(contactTable)
+            {
+                var delete = contactTable.Contacts.Find(contact.Id);
+                
+                contactTable.Remove(delete);
+                contactTable.SaveChanges();
+            }
         }
 
         public string SelectById(int id)
