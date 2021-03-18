@@ -58,7 +58,7 @@ namespace AddressBook
                     case 4:
                         Console.Clear();
                         Console.WriteLine(Select(host.Services));
-                        Console.WriteLine("\nPress any key to return to the Menu!");
+                        Console.WriteLine("Press any key to return to the Menu!");
                         Console.ReadKey();
                         break;
                     case 5:
