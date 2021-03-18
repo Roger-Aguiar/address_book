@@ -20,6 +20,11 @@ namespace AddressBook
             City = city;
             State = state;
         }
+
+        public Contact(int id)
+        {
+            Id = id;            
+        }
         
         public int Id{get; init;}
         public string Name {get; init;}
